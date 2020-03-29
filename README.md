@@ -31,10 +31,17 @@ pip install matplotlib
 
 # Running
 Activate virtual environment
-`source activate`
+```
+cd bin
+source activate
+cd ..
+```
 
 From the project root, run:
-`$ pipenv run python fetch_data.py`
+```
+pipenv run python fetch_data.py
+pipenv run python process_data.py
+```
 
 
 # Quitting

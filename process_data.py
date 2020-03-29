@@ -14,10 +14,12 @@ import matplotlib.pyplot as plt
 '''
 CHANGE COUNTRY HERE
 '''
-COUNTRY = 'Italy'
+COUNTRY = 'China'
+TERRITORY = 'Hubei'
 
+TERRITORY_STR = '-' + TERRITORY if TERRITORY else ''
 INPUT_FILE = "data/confirmed_cases.csv"
-IMAGE_FILE = 'images/covidcases-' + COUNTRY + '.png'
+IMAGE_FILE = 'images/covidcases-' + COUNTRY + TERRITORY_STR + '.png'
 
 def format_date(date_str):
     date_obj = datetime.strptime(date_str, '%m/%d/%y')
@@ -60,11 +62,10 @@ with open(INPUT_FILE) as csv_file:
             headers = list(headers)
             line_count += 1
         else:
-            if row[1] == COUNTRY:
-                total_cases = row[4:]
-                total_cases = list(map(int, total_cases)) # cast to int
-                new_cases = [0] + [y - x for x,y in zip(total_cases,total_cases[1:])]
-                #print(f'\t{row}')
+            if (TERRITORY and row[0] == TERRITORY and row[1] == COUNTRY) or (row[1] == COUNTRY):
+                    total_cases = row[4:]
+                    total_cases = list(map(int, total_cases)) # cast to int
+                    new_cases = [0] + [y - x for x,y in zip(total_cases,total_cases[1:])]
             line_count += 1
 
     print("Country: " + COUNTRY)
@@ -87,7 +88,7 @@ fig = plt.figure(figsize=(15,10))
 plt.plot(x, new_cases, label='Cases')
 plt.plot(x, ma5, label='MA5')
 plt.plot(x, ma30, label='MA30')
-plt.title(COUNTRY + " Confirmed Cases of Covid-19")
+plt.title(COUNTRY + TERRITORY_STR + " Confirmed Cases of Covid-19")
 plt.xlabel('2020')
 plt.ylabel('Confirmed Cases')
 plt.xticks(x, [str(i) for i in x], rotation=90)
