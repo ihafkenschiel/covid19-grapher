@@ -11,8 +11,13 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+'''
+CHANGE COUNTRY HERE
+'''
+COUNTRY = 'Italy'
+
 INPUT_FILE = "data/confirmed_cases.csv"
-COUNTRY = 'Denmark'
+IMAGE_FILE = 'images/covidcases-' + COUNTRY + '.png'
 
 def format_date(date_str):
     date_obj = datetime.strptime(date_str, '%m/%d/%y')
@@ -47,7 +52,7 @@ with open(INPUT_FILE) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     headers = []
-    us_data = []
+    total_cases = []
     for row in csv_reader:
         if line_count == 0:
             headers = row[4:]
@@ -56,25 +61,30 @@ with open(INPUT_FILE) as csv_file:
             line_count += 1
         else:
             if row[1] == COUNTRY:
-                us_data = row[4:]
-                us_data = list(map(int, us_data)) # cast to int
+                total_cases = row[4:]
+                total_cases = list(map(int, total_cases)) # cast to int
+                new_cases = [0] + [y - x for x,y in zip(total_cases,total_cases[1:])]
                 #print(f'\t{row}')
             line_count += 1
 
+    print("Country: " + COUNTRY)
     print(headers)
-    print(us_data)
-    print(str(len(headers)) + '/' + str(len(us_data)))
+    print("Total Cases: ")
+    print(total_cases)
+    print("New Cases: ")
+    print(new_cases)
+    print("Days: " + str(len(headers)) + '/' + str(len(new_cases)))
 
 x = headers
 
-ma5 = RunningMean(us_data, 5)
-ma5 = [0]*(len(us_data) - len(ma5)) + ma5 #fill missing beginning values with 0s
+ma5 = RunningMean(new_cases, 5)
+ma5 = [0]*(len(new_cases) - len(ma5)) + ma5 #fill missing beginning values with 0s
 
-ma30 = RunningMean(us_data, 30)
-ma30 = [0]*(len(us_data) - len(ma30)) + ma30 #fill missing beginning values with 0s
+ma30 = RunningMean(new_cases, 30)
+ma30 = [0]*(len(new_cases) - len(ma30)) + ma30 #fill missing beginning values with 0s
 
 fig = plt.figure(figsize=(15,10))
-plt.plot(x, us_data, label='Cases')
+plt.plot(x, new_cases, label='Cases')
 plt.plot(x, ma5, label='MA5')
 plt.plot(x, ma30, label='MA30')
 plt.title(COUNTRY + " Confirmed Cases of Covid-19")
@@ -89,4 +99,6 @@ plt.tick_params(axis='y', which='major', labelsize=10)
 plt.legend()  # Add a legend.
 plt.tight_layout()
 
-plt.savefig('covidcases-' + COUNTRY + '.png')
+plt.savefig(IMAGE_FILE)
+
+print("Graph saved in " + IMAGE_FILE)
