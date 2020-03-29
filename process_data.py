@@ -16,10 +16,17 @@ CHANGE COUNTRY HERE
 '''
 COUNTRY = input("Country:")
 TERRITORY = input("Territory (optional):")
+CASETYPE = input("Confirmed (c) or Deaths (d):")
 
 TERRITORY_STR = '-' + TERRITORY if TERRITORY else ''
-INPUT_FILE = "data/confirmed_cases.csv"
-IMAGE_FILE = 'images/covidcases-' + COUNTRY + TERRITORY_STR + '.png'
+if CASETYPE == 'd':
+    INPUT_FILE = "data/deaths.csv"
+    CHART_TITLE = COUNTRY + TERRITORY_STR + " Deaths from Covid-19"
+    IMAGE_FILE = 'images/deaths/coviddeaths-' + COUNTRY + TERRITORY_STR + '.png'
+else:
+    INPUT_FILE = "data/confirmed_cases.csv"
+    CHART_TITLE = COUNTRY + TERRITORY_STR + " Confirmed Cases of Covid-19"
+    IMAGE_FILE = 'images/confirmed/covidcases-' + COUNTRY + TERRITORY_STR + '.png'
 
 def format_date(date_str):
     date_obj = datetime.strptime(date_str, '%m/%d/%y')
@@ -88,7 +95,7 @@ fig = plt.figure(figsize=(15,10))
 plt.plot(x, new_cases, label='Cases')
 plt.plot(x, ma5, label='MA5')
 plt.plot(x, ma30, label='MA30')
-plt.title(COUNTRY + TERRITORY_STR + " Confirmed Cases of Covid-19")
+plt.title(CHART_TITLE)
 plt.xlabel('2020')
 plt.ylabel('Confirmed Cases')
 plt.xticks(x, [str(i) for i in x], rotation=90)
