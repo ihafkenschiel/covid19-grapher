@@ -22,10 +22,12 @@ TERRITORY_STR = '-' + TERRITORY if TERRITORY else ''
 if CASETYPE == 'd':
     INPUT_FILE = "data/deaths.csv"
     CHART_TITLE = COUNTRY + TERRITORY_STR + " Deaths from Covid-19"
+    YLABEL = 'Deaths'
     IMAGE_FILE = 'images/deaths/coviddeaths-' + COUNTRY + TERRITORY_STR + '.png'
 else:
     INPUT_FILE = "data/confirmed_cases.csv"
     CHART_TITLE = COUNTRY + TERRITORY_STR + " Confirmed Cases of Covid-19"
+    YLABEL = 'Confirmed Cases'
     IMAGE_FILE = 'images/confirmed/covidcases-' + COUNTRY + TERRITORY_STR + '.png'
 
 def format_date(date_str):
@@ -97,7 +99,7 @@ plt.plot(x, ma5, label='MA5')
 plt.plot(x, ma30, label='MA30')
 plt.title(CHART_TITLE)
 plt.xlabel('2020')
-plt.ylabel('Confirmed Cases')
+plt.ylabel(YLABEL)
 plt.xticks(x, [str(i) for i in x], rotation=90)
 
 #set parameters for tick labels
