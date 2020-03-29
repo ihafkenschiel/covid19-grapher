@@ -13,4 +13,5 @@ with requests.Session() as s:
     cr = csv.reader(decoded_content.splitlines(), delimiter=',')
     my_list = list(cr)
     for row in my_list:
-        print(row)
+        print(row[0])
+        break

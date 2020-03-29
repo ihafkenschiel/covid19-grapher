@@ -26,10 +26,9 @@ source activate
 ## pipenv
 `$ pip install pipenv`
 
-## Imports
+## Modules
 ```
 pipenv install requests
-pipenv install csv
 ```
 
 # Running
