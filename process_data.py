@@ -1,17 +1,22 @@
 
-# Get Covid case data
-import requests # To install run: pipenv install requests
 import csv
 
-CSV_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+INPUT_FILE = "data/confirmed_cases.csv"
 
-with requests.Session() as s:
-    download = s.get(CSV_URL)
+with open(INPUT_FILE) as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    line_count = 0
+    headers = []
+    us_data = []
+    for row in csv_reader:
+        if line_count == 0:
+            headers = row
+            line_count += 1
+        else:
+            if row[1] == 'US':
+                us_data = row[4:]
+                #print(f'\t{row}')
+            line_count += 1
+    #print(f'Processed {line_count} lines.')
 
-    decoded_content = download.content.decode('utf-8')
-
-    cr = csv.reader(decoded_content.splitlines(), delimiter=',')
-    my_list = list(cr)
-    for row in my_list:
-        print(row[0])
-        break
+    print(f'{us_data}')
