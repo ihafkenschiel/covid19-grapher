@@ -65,16 +65,17 @@ with open(INPUT_FILE) as csv_file:
     print(str(len(headers)) + '/' + str(len(us_data)))
 
 x = headers
-y = us_data
 
 ma5 = RunningMean(us_data, 5)
-ma5 = [0]*(len(y) - len(ma5)) + ma5 #fill missing beginning values with 0s
+ma5 = [0]*(len(us_data) - len(ma5)) + ma5 #fill missing beginning values with 0s
 
 ma30 = RunningMean(us_data, 30)
-ma30 = [0]*(len(y) - len(ma30)) + ma30 #fill missing beginning values with 0s
+ma30 = [0]*(len(us_data) - len(ma30)) + ma30 #fill missing beginning values with 0s
 
 fig = plt.figure(figsize=(15,10))
-plt.plot(x, y, ma30)
+plt.plot(x, us_data, label='Cases')
+plt.plot(x, ma5, label='MA5')
+plt.plot(x, ma30, label='MA30')
 plt.title("US Confirmed Cases of Covid-19")
 plt.xlabel('2020')
 plt.ylabel('Confirmed Cases')
@@ -84,6 +85,7 @@ plt.xticks(x, [str(i) for i in x], rotation=90)
 plt.tick_params(axis='x', which='major', labelsize=10)
 plt.tick_params(axis='y', which='major', labelsize=10)
 
+plt.legend()  # Add a legend.
 plt.tight_layout()
 
 plt.savefig('covidcases-US.png')
