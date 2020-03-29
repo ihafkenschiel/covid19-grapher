@@ -23,12 +23,10 @@ cd bin
 source activate
 ```
 
-## pipenv
-`$ pip install pipenv`
-
 ## Modules
 ```
-pipenv install requests
+pip install requests
+pip install matplotlib
 ```
 
 # Running
