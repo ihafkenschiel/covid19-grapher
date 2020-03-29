@@ -25,6 +25,7 @@ with open(INPUT_FILE) as csv_file:
         else:
             if row[1] == 'US':
                 us_data = row[4:]
+                us_data = list(map(int, us_data)) # cast to int
                 #print(f'\t{row}')
             line_count += 1
 
@@ -34,9 +35,9 @@ with open(INPUT_FILE) as csv_file:
 
 x = headers
 y = us_data
-plt.figure(figsize=(15,10))
+fig = plt.figure(figsize=(15,10))
 plt.plot(x, y)
-plt.bar(x, y, alpha=0.2)
+#plt.bar(x, y, alpha=0.2)
 plt.title("US Confirmed Cases of Covid-19")
 plt.xlabel('2020')
 plt.ylabel('Confirmed Cases')
@@ -46,6 +47,6 @@ plt.xticks(x, [str(i) for i in x], rotation=90)
 plt.tick_params(axis='x', which='major', labelsize=10)
 plt.tick_params(axis='y', which='major', labelsize=10)
 
-#plt.tight_layout()
+plt.tight_layout()
 
 plt.savefig('covidcases-US.png')
