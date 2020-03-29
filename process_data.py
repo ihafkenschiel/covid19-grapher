@@ -12,6 +12,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 INPUT_FILE = "data/confirmed_cases.csv"
+COUNTRY = 'Denmark'
 
 def format_date(date_str):
     date_obj = datetime.strptime(date_str, '%m/%d/%y')
@@ -54,7 +55,7 @@ with open(INPUT_FILE) as csv_file:
             headers = list(headers)
             line_count += 1
         else:
-            if row[1] == 'US':
+            if row[1] == COUNTRY:
                 us_data = row[4:]
                 us_data = list(map(int, us_data)) # cast to int
                 #print(f'\t{row}')
@@ -76,7 +77,7 @@ fig = plt.figure(figsize=(15,10))
 plt.plot(x, us_data, label='Cases')
 plt.plot(x, ma5, label='MA5')
 plt.plot(x, ma30, label='MA30')
-plt.title("US Confirmed Cases of Covid-19")
+plt.title(COUNTRY + " Confirmed Cases of Covid-19")
 plt.xlabel('2020')
 plt.ylabel('Confirmed Cases')
 plt.xticks(x, [str(i) for i in x], rotation=90)
@@ -88,4 +89,4 @@ plt.tick_params(axis='y', which='major', labelsize=10)
 plt.legend()  # Add a legend.
 plt.tight_layout()
 
-plt.savefig('covidcases-US.png')
+plt.savefig('covidcases-' + COUNTRY + '.png')
