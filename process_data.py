@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 '''
 CHANGE COUNTRY HERE
 '''
-COUNTRY = 'China'
-TERRITORY = 'Hubei'
+COUNTRY = input("Country:")
+TERRITORY = input("Territory (optional):")
 
 TERRITORY_STR = '-' + TERRITORY if TERRITORY else ''
 INPUT_FILE = "data/confirmed_cases.csv"
@@ -63,9 +63,9 @@ with open(INPUT_FILE) as csv_file:
             line_count += 1
         else:
             if (TERRITORY and row[0] == TERRITORY and row[1] == COUNTRY) or (row[1] == COUNTRY):
-                    total_cases = row[4:]
-                    total_cases = list(map(int, total_cases)) # cast to int
-                    new_cases = [0] + [y - x for x,y in zip(total_cases,total_cases[1:])]
+                total_cases = row[4:]
+                total_cases = list(map(int, total_cases)) # cast to int
+                new_cases = [0] + [y - x for x,y in zip(total_cases,total_cases[1:])]
             line_count += 1
 
     print("Country: " + COUNTRY)
