@@ -1,10 +1,15 @@
 
 import csv
+from datetime import datetime
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 INPUT_FILE = "data/confirmed_cases.csv"
+
+def format_date(date_str):
+    date_obj = datetime.strptime(date_str, '%m/%d/%y')
+    return str(date_obj.month) + '/' + str(date_obj.day)
 
 with open(INPUT_FILE) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -14,6 +19,8 @@ with open(INPUT_FILE) as csv_file:
     for row in csv_reader:
         if line_count == 0:
             headers = row[4:]
+            headers = map(format_date, headers)
+            headers = list(headers)
             line_count += 1
         else:
             if row[1] == 'US':
