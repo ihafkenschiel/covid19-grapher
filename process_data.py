@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 '''
 CHANGE COUNTRY HERE
 '''
-COUNTRIES = ["Brazil", "Costa Rica", "France", "Germany", "Iran", "Israel", "Italy", "Japan", "Mexico", "Russia", "Singapore", "Spain", "Taiwan*", "Turkey", "US"]
+COUNTRIES = ["Brazil", "Costa Rica", "France", "Germany", "Iran", "Israel", "Italy", "Japan", "Mexico", "Philippines", "Russia", "Singapore", "Spain", "Taiwan*", "Turkey", "US"]
 print(COUNTRIES)
 
 CASETYPE = input("Confirmed (c) or Deaths (d):")
