@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 '''
 CHANGE COUNTRY HERE
 '''
-COUNTRIES = ["Brazil", "Costa Rica", "France", "Germany", "Iran", "Israel", "Italy", "Japan", "Mexico", "Philippines", "Russia", "Singapore", "Spain", "Taiwan*", "Turkey", "US"]
+COUNTRIES = ["China"]
 print(COUNTRIES)
 
 CASETYPE = input("Confirmed (c) or Deaths (d):")
@@ -24,6 +24,7 @@ if CASETYPE == 'd':
 else:
     INPUT_FILE = "data/confirmed_cases.csv"
     YLABEL = 'Confirmed Cases'
+
 
 def format_date(date_str):
     date_obj = datetime.strptime(date_str, '%m/%d/%y')
@@ -66,9 +67,9 @@ with open(INPUT_FILE) as csv_file:
             headers = list(headers)
             line_count += 1
         else:
-            if row[1] in COUNTRIES:
+            if row[1] in COUNTRIES and row[0] != '':
                 COUNTRY = row[1]
-                TERRITORY = '' #input("Territory (optional):")
+                TERRITORY = row[0]
 
                 TERRITORY_STR = '-' + TERRITORY if TERRITORY else ''
                 if CASETYPE == 'd':

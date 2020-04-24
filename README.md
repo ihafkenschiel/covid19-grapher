@@ -19,8 +19,7 @@ Note the installation is already performed in the code.
 Create a virtual environment with a clean copy of Python
 ```
 virtualenv .
-cd bin
-source activate
+source bin/activate
 ```
 
 ## Modules
@@ -32,15 +31,13 @@ pip install matplotlib
 # Running
 Activate virtual environment
 ```
-cd bin
-source activate
-cd ..
+source bin/activate
 ```
 
 From the project root, run:
 ```
 pipenv run python fetch_csv.py
-pipenv run python process_data.py
+pipenv run python process_countries.py
 ```
 
 
