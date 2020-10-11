@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 '''
 CHANGE COUNTRY HERE
 '''
-COUNTRIES = ["Brazil", "Costa Rica", "Ecuador", "France", "Germany", "Iran", "Israel", "Italy", "Japan", "Mexico", "Philippines", "Russia", "Singapore", "Spain", "Taiwan*", "Turkey", "United Kingdom", "US"]
+COUNTRIES = ["Brazil", "Costa Rica", "Ecuador", "France", "Germany", "Iran", "Israel", "Italy", "Japan", "Mexico", "Philippines", "Russia", "Singapore", "Spain", "Sweden", "Taiwan*", "Turkey", "United Kingdom", "US"]
 print(COUNTRIES)
 
 CASETYPE = input("Confirmed (c) or Deaths (d):")
@@ -24,6 +24,18 @@ if CASETYPE == 'd':
 else:
     INPUT_FILE = "data/confirmed_cases.csv"
     YLABEL = 'Confirmed Cases'
+
+def getPopulations():
+    """
+     Outputs:
+        dictionary with country as key and population as value
+    """
+    populations = {}
+    with open("data/population.csv") as myfile:
+        for line in myfile:
+            country, population = line.partition(",")[::2]
+            populations[country.strip()] = int(population)
+    return populations
 
 
 def format_date(date_str):
@@ -61,6 +73,7 @@ with open(INPUT_FILE) as csv_file:
     line_count = 0
     headers = []
     total_cases = []
+    populations = getPopulations()
     for row in csv_reader:
         if line_count == 0:
             headers = row[4:]
@@ -70,6 +83,7 @@ with open(INPUT_FILE) as csv_file:
         else:
             if row[1] in COUNTRIES and row[0] == '':
                 COUNTRY = row[1]
+                POPULATION = populations[COUNTRY]
 
                 if CASETYPE == 'd':
                     CHART_TITLE = COUNTRY + " Deaths from Covid-19"
@@ -82,12 +96,17 @@ with open(INPUT_FILE) as csv_file:
                 total_cases = list(map(int, total_cases)) # cast to int
                 new_cases = [0] + [y - x for x,y in zip(total_cases,total_cases[1:])]
 
+                # Convert to per capita by dividing each case by population
+                new_cases = [i/POPULATION for i in new_cases] 
+                total_cases = [i/POPULATION for i in total_cases] 
+
                 print("Country: " + COUNTRY)
-                print(headers)
-                print("Total Cases: ")
-                print(total_cases)
-                print("New Cases: ")
-                print(new_cases)
+                print("Population: " + f'{POPULATION:,}')
+                # print(headers) # Dates
+                # print("Total Cases: ")
+                # print(total_cases)
+                # print("New Cases: ")
+                # print(new_cases)
                 print("Days: " + str(len(headers)) + '/' + str(len(new_cases)))
 
                 x = headers
@@ -95,13 +114,15 @@ with open(INPUT_FILE) as csv_file:
                 ma5 = RunningMean(new_cases, 5)
                 ma5 = [0]*(len(new_cases) - len(ma5)) + ma5 #fill missing beginning values with 0s
 
-                ma30 = RunningMean(new_cases, 30)
-                ma30 = [0]*(len(new_cases) - len(ma30)) + ma30 #fill missing beginning values with 0s
+                # ma30 = RunningMean(new_cases, 30)
+                # ma30 = [0]*(len(new_cases) - len(ma30)) + ma30 #fill missing beginning values with 0s
 
                 fig = plt.figure(figsize=(15,10))
+                axes = fig.add_axes([0.1,0.1,0.8,0.8])
+                axes.set_ylim([0,0.00001])
                 plt.plot(x, new_cases, label='Cases')
                 plt.plot(x, ma5, label='MA5')
-                plt.plot(x, ma30, label='MA30')
+                # plt.plot(x, ma30, label='MA30')
                 plt.title(CHART_TITLE)
                 plt.xlabel('2020')
                 plt.ylabel(YLABEL)
@@ -112,10 +133,12 @@ with open(INPUT_FILE) as csv_file:
                 plt.tick_params(axis='y', which='major', labelsize=10)
 
                 plt.legend()  # Add a legend.
-                plt.tight_layout()
+                # plt.tight_layout()
 
                 plt.savefig(IMAGE_FILE)
 
                 print("Graph saved in " + IMAGE_FILE)
+
+                print(" ")
 
             line_count += 1

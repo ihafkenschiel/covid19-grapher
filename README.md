@@ -35,10 +35,8 @@ source bin/activate
 ```
 
 From the project root, run:
-```
-pipenv run python fetch_csv.py
-pipenv run python process_countries.py
-```
+`pipenv run python fetch_csv.py`
+`pipenv run python process_countries.py`
 
 
 # Quitting
