@@ -14,7 +14,8 @@ import matplotlib.pyplot as plt
 '''
 CHANGE COUNTRY HERE
 '''
-COUNTRIES = ["Brazil", "Costa Rica", "Ecuador", "France", "Germany", "Iran", "Israel", "Italy", "Japan", "Mexico", "Philippines", "Russia", "Singapore", "Spain", "Sweden", "Taiwan*", "Turkey", "United Kingdom", "US"]
+COUNTRIES = ["Brazil", "Canada", "Colombia", "Costa Rica", "Ecuador", "France", "Germany", "Iran", "Israel", "Italy", "Japan", "Mexico", "Philippines", "Russia", "Singapore", "Spain", "Sweden", "Taiwan*", "Turkey", "United Kingdom", "US"]
+#COUNTRIES = ["Brazil"]
 print(COUNTRIES)
 
 CASETYPE = input("Confirmed (c) or Deaths (d):")
@@ -40,7 +41,7 @@ def getPopulations():
 
 def format_date(date_str):
     date_obj = datetime.strptime(date_str, '%m/%d/%y')
-    return str(date_obj.month) + '/' + str(date_obj.day)
+    return str(date_obj.year) + '/' +str(date_obj.month) + '/' + str(date_obj.day)
 
 def RunningMean(seq,M):
     """
@@ -124,13 +125,14 @@ with open(INPUT_FILE) as csv_file:
                 plt.plot(x, ma5, label='MA5')
                 # plt.plot(x, ma30, label='MA30')
                 plt.title(CHART_TITLE)
-                plt.xlabel('2020')
+                plt.xlabel('Year')
                 plt.ylabel(YLABEL)
                 plt.xticks(x, [str(i) for i in x], rotation=90)
+                axes.xaxis.set_ticklabels([])
 
                 #set parameters for tick labels
-                plt.tick_params(axis='x', which='major', labelsize=10)
-                plt.tick_params(axis='y', which='major', labelsize=10)
+                plt.tick_params(axis='x', which='major', labelsize=5)
+                plt.tick_params(axis='y', which='major', labelsize=5)
 
                 plt.legend()  # Add a legend.
                 # plt.tight_layout()
